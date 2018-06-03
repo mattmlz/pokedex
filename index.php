@@ -2,7 +2,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require __DIR__ . '/../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 //Set usefulls variables
 $config['displayErrorDetails'] = true;
@@ -15,12 +15,6 @@ $config['db']['dbname'] = "hetic_pokedex";
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 
-$container['logger'] = function($c) {
-    $logger = new \Monolog\Logger('my_logger');
-    $file_handler = new \Monolog\Handler\StreamHandler("../logs/app.log");
-    $logger->pushHandler($file_handler);
-    return $logger;
-};
 $container['db'] = function ($c) {
     $db = $c['settings']['db'];
     $pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'],
@@ -33,3 +27,10 @@ $container['view'] = function() {
     $view = new \Slim\Views\Twig('./templates');
     return $view;
 };
+
+//Routes
+$app->get('/', function(Request $request, Response $response){
+    $this->view->render($response, 'src/templates/home.twig');
+})->setName('home');
+
+$app->run();
