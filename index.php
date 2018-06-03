@@ -24,13 +24,13 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 $container['view'] = function() {
-    $view = new \Slim\Views\Twig('./templates');
+    $view = new \Slim\Views\Twig('./views');
     return $view;
 };
 
 //Routes
-$app->get('/', function(Request $request, Response $response){
-    $this->view->render($response, 'src/templates/home.twig');
+$app->get('/', function(Request $request, Response $response) {
+    return $this->view->render($response, 'pages/home.twig');
 })->setName('home');
 
 $app->run();
