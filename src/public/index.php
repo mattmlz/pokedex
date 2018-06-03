@@ -11,6 +11,7 @@ $config['db']['user']   = "user";
 $config['db']['pass']   = "password";
 $config['db']['dbname'] = "hetic_pokedex";
 
+//configuration of Slim
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 
