@@ -1,24 +1,26 @@
 {{ include('partials/header.twig') }}
 
-<div class="container form">
-  <div class="card">
-    <div class="row">
-      <div class="input-field col s6 center">
-        <input id="email" type="email" class="validate">
-        <label for="email">E-mail</label>
+<div class="container form center-align">
+  <div class="card hoverable">
+    <form method="post" accept-charset="UTF-8" action="{{ base_url() }}/login/log">
+      <div class="card-content">
+        <div class="row">
+          <div class="input-field col s6">
+            <input name="email" id="email" type="email" class="validate">
+            <label for="email">E-mail</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="password" id="password" type="password" class="validate">
+            <label for="password">Password</label>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="input-field col s6 center">
-        <input id="password" type="password" class="validate">
-        <label for="password">Password</label>
+      <div class="card-action">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Validate
+          <i class="material-icons right">send</i>
+        </button>
       </div>
-    </div>
-
-    <button class="btn waves-effect waves-light" type="submit" name="action">Validate
-      <i class="material-icons right">send</i>
-    </button>
+    </form>
   </div>
 </div>
 
