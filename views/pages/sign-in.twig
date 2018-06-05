@@ -1,3 +1,43 @@
 {{ include('partials/header.twig') }}
 
+<div class="container form center-align">
+  <div class="card hoverable">
+    <form method="post" action="{{ base_url() }}/sign-in/create-user">
+      <div class="card-content">
+        <div class="row">
+          <div class="input-field col s6">
+            <input name="first-name" id="first-name" type="text" class="validate">
+            <label for="first-name">First name</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="last-name" id="last-name" type="text" class="validate">
+            <label for="last-name">Last name</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="email" id="email" type="email" class="validate">
+            <label for="email">E-mail</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="confirm-email" id="confirm-email" type="email" class="validate">
+            <label for="confirm-email">Confirm e-mail</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="password" id="password" type="password" class="validate">
+            <label for="password">Password</label>
+          </div>
+          <div class="input-field col s6">
+            <input name="confirm-password" id="confirm-password" type="password" class="validate">
+            <label for="confirm-password">Confirm password</label>
+          </div>
+        </div>
+      </div>
+      <div class="card-action">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Validate
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 {{ include('partials/footer.twig') }}

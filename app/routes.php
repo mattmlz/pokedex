@@ -33,3 +33,14 @@ $app->get('/sign-in',function(Request $request, Response $response) {
   $dataView = [];
   return $this->view->render($response, 'pages/sign-in.twig', $dataView);
 })->setName('sign-in');
+
+// Check inscription in DB and add or not
+/* $app->post('/sign-in/create-user"', function(Request $request, Response $response) {
+  $data = $request->getParsedBody();
+  $user_data = [];
+  $user_data['email'] = filter_var($data['email'], FILTER_SANITIZE_STRING);
+  $user_data['password'] = filter_var($data['password'], FILTER_SANITIZE_STRING);
+  echo '<pre>';
+  var_dump($user_data);
+  echo '</pre>';
+}); */
