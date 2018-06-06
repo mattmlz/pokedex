@@ -40,16 +40,8 @@
   </div>
 
   <div class="center-align messages">
-    {% if flash.errors is defined %}
-      {% for error in flash.errors %}
-        <h6>{{ error }}</h6>
-      {% endfor %}
-    {% endif %}
-    {% if flash.message is defined %}
-      {% for message in flash.message %}
-        <h6>{{ message }}</h6>
-      {% endfor %}
-    {% endif %}
+    <h6>{{ success.0 }}</h6>
+    <h6>{{ error.0 }}</h6>
   </div>
 </div>
 

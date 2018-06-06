@@ -28,13 +28,7 @@ $app->get('/login',function(Request $request, Response $response) {
   echo '</pre>';
 }); */
 
-// Sign in
-$app->get('/sign-in', function(Request $request, Response $response) {
-  $dataView = [];
-  return $this->view->render($response, 'pages/sign-in.twig', $dataView);
-});
-
-// Sign in
+// Create account
 $app->post('/sign-in', function(Request $request, Response $response) use ($app) {
   //Set parameters for datas handling
   $errors = [];
@@ -56,24 +50,28 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
       'required' => 'true',
     ],
   ];
-
   //Handle datas
-  foreach($params as $param=>$options){
-    $value = $request->getParams();
-    echo '<pre>';
-    var_dump($value);
-    echo '</pre>';
-    if($options['required']){
-      if(!$value){
-        $errors[] = $options['name'].' is required!';
-      }
+  $value = $request->getParams();
+  if($options['required']){
+    if(!$value){
+      $errors[] = $options['name'].' is required!';
     }
   }
+
   if($errors){
-    $app->flash('errors',$errors);
+    $this->flash->addMessage('errors', $errors);
   } else{
   //submit_to_db($email, $subject, $message);
-  $app->flash('message','Inscription successed!');
+  $this->flash->addMessage('success','Inscription successed!');
   }
+  // Redirect
+  return $response->withStatus(302)->withHeader('Location', 'sign-in');
 
 })->setName('sign-in');
+
+// Sign in
+$app->get('/sign-in', function(Request $request, Response $response) {
+  // Get flash messages from previous request
+  $messages = $this->flash->getMessages();
+  return $this->view->render($response, 'pages/sign-in.twig', $messages);
+});
