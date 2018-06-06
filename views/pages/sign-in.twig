@@ -2,7 +2,7 @@
 
 <div class="container form center-align">
   <div class="card hoverable">
-    <form method="post" action="{{ base_url() }}/sign-in/create-user">
+    <form method="post" id='sign-in'>
       <div class="card-content">
         <div class="row">
           <div class="input-field col s6">
@@ -37,6 +37,19 @@
         </button>
       </div>
     </form>
+  </div>
+
+  <div class="center-align messages">
+    {% if flash.errors is defined %}
+      {% for error in flash.errors %}
+        <h6>{{ error }}</h6>
+      {% endfor %}
+    {% endif %}
+    {% if flash.message is defined %}
+      {% for message in flash.message %}
+        <h6>{{ message }}</h6>
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 

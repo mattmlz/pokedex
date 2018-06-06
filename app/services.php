@@ -25,3 +25,8 @@ $container['db'] = function ($container){
 	
 	return $pdo;
 };
+
+//Register provider
+$container['flash'] = function () {
+  return new \Slim\Flash\Messages();
+};
