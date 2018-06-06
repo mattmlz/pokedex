@@ -27,3 +27,5 @@ php -r "unlink('composer-setup.php');"
 ## Features:
 - [Materialize CSS](http://materializecss.com/)
 - Connection and creating account
+- [Twig](https://twig.symfony.com/)
+- [Slim Flash message](https://www.slimframework.com/docs/v3/features/flash.html)
