@@ -21,7 +21,7 @@ php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece38
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 ```
-- Run `$ composer require slim/slim slim/twig-view` in your terminal (*You may need use sudo*)
+- Run `$ composer require slim/slim slim/twig-view slim/flash` in your terminal (*You may need use sudo*)
 - Go to : http://localhost:8888/web
 
 ## Features:
