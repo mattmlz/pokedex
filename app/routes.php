@@ -13,13 +13,9 @@ $app->get('/',function(Request $request, Response $response) {
 
 // Login page GET
 $app->get('/login',function(Request $request, Response $response) {
-  if($_SESSION){
-    return $response->withStatus(302)->withHeader('Location', 'profile');
-  } else {
-    // Get flash messages
-    $messages = $this->flash->getMessages();
-    return $this->view->render($response, 'pages/login.twig', $messages);
-  }
+  // Get flash messages
+  $messages = $this->flash->getMessages();
+  return $this->view->render($response, 'pages/login.twig', $messages);
 })->setName('login');
 
 // User login POST
@@ -116,6 +112,7 @@ $app->get('/profile',function(Request $request, Response $response) use ($app) {
 
 // Log out
 $app->get('/logout', function (Request $request, Response $response) {
+  //prevent trying to destroy session without being connected
   if($_SESSION){
     session_destroy();
     $dataView = [];
