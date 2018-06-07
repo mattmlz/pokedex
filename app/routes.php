@@ -31,7 +31,7 @@ $app->post('/login',function(Request $request, Response $response) use ($app){
     $_SESSION['auth'] = [
       'first_name' => $user->first_name,
     ];
-    return $response->withStatus(302)->withHeader('Location', 'profile');
+    return $response->withStatus(302)->withHeader('Location', 'dashboard/profile');
   } else {
     $this->flash->addMessage('error','Wrong email or password ⚠️');
     return $response->withStatus(302)->withHeader('Location', 'login');
