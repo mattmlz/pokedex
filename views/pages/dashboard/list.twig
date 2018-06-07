@@ -1,6 +1,18 @@
 {{ include('partials/header_logged.twig') }}
 <div class="container form center-align">
   <div class="row">
+    <div class="input-field col s12">
+      <select>
+        <option value="" disabled selected>Choose the type of your pokemon</option>
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
+        <option value="3">Option 3</option>
+      </select>
+      <label>Type</label>
+    </div>
+  </div>
+
+  <div class="row">
     {% for _pokemon in pokemons %}
       <div class="col s3">
         <div class="card">
@@ -23,5 +35,13 @@
       </div>
     {% endfor %}
   </div>
+
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, options);
+  });
+</script>
 {{ include('partials/footer.twig') }}
