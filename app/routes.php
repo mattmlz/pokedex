@@ -28,7 +28,9 @@ $app->post('/login',function(Request $request, Response $response) use ($app){
   $user = $logrequest->fetch();
   if(isset($user) && password_verify($value['password'], $user->password)){
     $_SESSION['logged'] = true;
-    $_SESSION['auth'] = $user;
+    $_SESSION['auth'] = [
+      'first_name' => $user->first_name,
+    ];
     return $response->withStatus(302)->withHeader('Location', 'profile');
   } else {
     $this->flash->addMessage('error','Wrong email or password ⚠️');
@@ -102,7 +104,10 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
 // Profile
 $app->get('/profile',function(Request $request, Response $response) use ($app) {
   if($_SESSION['logged'] === true){
-    $dataView = [];
+    
+    $dataView = [
+      'user' => $_SESSION['auth'],
+    ];
     return $this->view->render($response, 'pages/profile.twig', $dataView);
   } else {
     $this->flash->addMessage('error','Please connect or reconnect to your account ⚠️');
