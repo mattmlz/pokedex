@@ -102,18 +102,30 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
 })->setName('sign-in');
 
 // Profile
-$app->get('/profile',function(Request $request, Response $response) use ($app) {
+$app->get('/dashboard/profile', function(Request $request, Response $response) use ($app) {
   if($_SESSION['logged'] === true){
     
     $dataView = [
       'user' => $_SESSION['auth'],
     ];
-    return $this->view->render($response, 'pages/profile.twig', $dataView);
+    return $this->view->render($response, 'pages/dashboard/profile.twig', $dataView);
   } else {
     $this->flash->addMessage('error','Please connect or reconnect to your account ⚠️');
     return $response->withStatus(302)->withHeader('Location', 'login');
   }
 })->setName('profile');
+
+// Search pokemons
+$app->get('/dashboard/search', function(Request $request, Response $response) use ($app) {
+  $dataView = [];
+  return $this->view->render($response, 'pages/dashboard/search.twig', $dataView);
+})->setName('search');
+
+// List of pokemons
+$app->get('/dashboard/list', function(Request $request, Response $response) use ($app) {
+  $dataView = [];
+  return $this->view->render($response, 'pages/dashboard/list.twig', $dataView);
+})->setName('list');
 
 // Log out
 $app->get('/logout', function (Request $request, Response $response) {
