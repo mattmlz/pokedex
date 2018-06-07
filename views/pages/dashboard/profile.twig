@@ -5,21 +5,20 @@
   </div>
   <div class="row">
     <h5>Your ❤️ pokemons:</h5>
+    <p>If you want to change your list, click <a href="{{ path_for('list') }}">here</a></p>
   </div>
 
   <div class="row">
     <div class="col s4">
       <div class="card">
         <div class="card-image">
-          <img src="images/sample-1.jpg">
+          <img src="{{ base_url() }}/assets/pictures/pokemons/front/1.png">
           <span class="card-title">Nom du pokemon</span>
         </div>
         <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
+          <p>Bulbasaur</p>
+          <p>Height: 7</p>
+          <p>Weight: 69</p>
         </div>
       </div>
     </div>
