@@ -15,10 +15,10 @@
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper">
-          <a href="{{ base_url() }}" class="brand-logo">Pokedex</a>
+          <a href="{{ path_for('home') }}" class="brand-logo">Pokedex</a>
           <ul class="right hide-on-med-and-down">
-            <li><a href="{{ base_url() }}/login">Log in</a></li>
-            <li><a href="{{ base_url() }}/sign-in">Sign in</a></li>
+            <li><a href="{{ path_for('login') }}">Log in</a></li>
+            <li><a href="{{ path_for('sign-in') }}">Sign in</a></li>
           </ul>
         </div>
       </nav>

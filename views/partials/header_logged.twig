@@ -14,10 +14,11 @@
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper">
-          <a href="{{ base_url() }}" class="brand-logo">Pokedex</a>
+          <a href="{{ path_for('home') }}" class="brand-logo">Pokedex</a>
           <ul class="right hide-on-med-and-down">
             <li><a href="{{ base_url() }}/search">Search pokemons</a></li>
-            <li><a href="{{ base_url() }}/logout">Log out</a></li>
+            <li><a href="{{ base_url() }}/pokemons/list">Search pokemons</a></li>
+            <li><a href="{{ path_for('logout') }}">Log out</a></li>
           </ul>
         </div>
       </nav>
