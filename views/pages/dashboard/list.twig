@@ -1,25 +1,26 @@
 {{ include('partials/header_logged.twig') }}
 <div class="container form center-align">
   <div class="row">
-    <div class="col s4">
-      <div class="card">
-        <div class="card-image">
-          <img src="{{ base_url() }}/assets/pictures/pokemons/front/1.png">
-          <span class="card-title">Nom du pokemon</span>
-        </div>
-        <div class="card-content">
-          <p>Bulbasaur</p>
-          <p>Height: 7</p>
-          <p>Weight: 69</p>
-        </div>
-        <div class="card-action">
-          <label>
-            <input type="checkbox" class="indeterminate-checkbox" {# checked #} />
-            <span>Check if you love him</span>
-          </label>
+    {% for _pokemon in pokemons %}
+      <div class="col s3">
+        <div class="card">
+          <div class="card-image">
+            <img src="{{ base_url() }}/assets/pictures/{{ _pokemon.picture }}">
+          </div>
+          <div class="card-content">
+            <h5>{{ _pokemon.name }}</h5>
+            <p>Height: {{ _pokemon.height }}</p>
+            <p>Weight: {{ _pokemon.weight }}</p>
+          </div>
+          <div class="card-action">
+            <label>
+              <input type="checkbox" class="indeterminate-checkbox" {# checked #} />
+              <span>Check if you love him</span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 {{ include('partials/footer.twig') }}
