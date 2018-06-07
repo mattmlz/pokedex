@@ -11,12 +11,20 @@ $app->get('/',function(Request $request, Response $response) {
   return $this->view->render($response, 'pages/home.twig', $dataView);
 })->setName('home');
 
-// Login
+
+// Login page
 $app->get('/login',function(Request $request, Response $response) {
   // Get flash messages
   $messages = $this->flash->getMessages();
   return $this->view->render($response, 'pages/login.twig', $messages);
 })->setName('login');
+
+// Login page
+$app->post('/login',function(Request $request, Response $response) {
+  // Get flash messages
+  $messages = $this->flash->getMessages();
+  return $this->view->render($response, 'pages/login.twig', $messages);
+});
 
 // Sign in
 $app->get('/sign-in', function(Request $request, Response $response) {
@@ -25,7 +33,7 @@ $app->get('/sign-in', function(Request $request, Response $response) {
   return $this->view->render($response, 'pages/sign-in.twig', $messages);
 });
 
-// Sign in
+// Create account
 $app->post('/sign-in', function(Request $request, Response $response) use ($app) {
   //Set parameters for datas handling
   $errors = [];
@@ -61,8 +69,17 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
     $this->flash->addMessage('errors',$errors);
   } else{
     if($value['email'] === $value['confirm-email'] && $value['password'] === $value['confirm-password']){
-      //submit_to_db($email, $subject, $message);
+      // Create success message
       $this->flash->addMessage('success','Inscription successed! Welcome to Pokedex 💕 Please log-in.');
+
+      // Register new user to DB
+      $request = $this->db->prepare('INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)');
+      $request->execute([
+          'first_name' => $value['first-name'],
+          'last_name' => $value['last-name'],
+          'email' => $value['email'],
+          'password' => $value['password'],
+      ]);
       // Redirect
       return $response->withStatus(302)->withHeader('Location', 'login');
     } else {
