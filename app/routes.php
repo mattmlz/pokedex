@@ -13,22 +13,19 @@ $app->get('/',function(Request $request, Response $response) {
 
 // Login
 $app->get('/login',function(Request $request, Response $response) {
-  $dataView = [];
-  return $this->view->render($response, 'pages/login.twig', $dataView);
+  // Get flash messages
+  $messages = $this->flash->getMessages();
+  return $this->view->render($response, 'pages/login.twig', $messages);
 })->setName('login');
 
-// Check login in DB and log or not
-/* $app->post('/login/log', function(Request $request, Response $response) {
-  $data = $request->getParsedBody();
-  $user_data = [];
-  $user_data['email'] = filter_var($data['email'], FILTER_SANITIZE_STRING);
-  $user_data['password'] = filter_var($data['password'], FILTER_SANITIZE_STRING);
-  echo '<pre>';
-  var_dump($user_data);
-  echo '</pre>';
-}); */
+// Sign in
+$app->get('/sign-in', function(Request $request, Response $response) {
+  // Get flash messages
+  $messages = $this->flash->getMessages();
+  return $this->view->render($response, 'pages/sign-in.twig', $messages);
+});
 
-// Create account
+// Sign in
 $app->post('/sign-in', function(Request $request, Response $response) use ($app) {
   //Set parameters for datas handling
   $errors = [];
@@ -52,26 +49,25 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
   ];
   //Handle datas
   $value = $request->getParams();
-  if($options['required']){
-    if(!$value){
-      $errors[] = $options['name'].' is required!';
+  foreach($params as $param => $options){
+    if($options['required']){
+      if(!$value){
+        $errors[] = $options['name'].' is required!';
+      }
     }
   }
 
   if($errors){
-    $this->flash->addMessage('errors', $errors);
+    $this->flash->addMessage('errors',$errors);
   } else{
-  //submit_to_db($email, $subject, $message);
-  $this->flash->addMessage('success','Inscription successed!');
+    if($value['email'] === $value['confirm-email'] && $value['password'] === $value['confirm-password']){
+      //submit_to_db($email, $subject, $message);
+      $this->flash->addMessage('success','Inscription successed! Welcome to Pokedex 💕 Please log-in.');
+      // Redirect
+      return $response->withStatus(302)->withHeader('Location', 'login');
+    } else {
+      $this->flash->addMessage('error','⚠️ Your email or your password are not corresponding ⚠️');
+      return $response->withStatus(302)->withHeader('Location', 'sign-in');
+    }
   }
-  // Redirect
-  return $response->withStatus(302)->withHeader('Location', 'sign-in');
-
 })->setName('sign-in');
-
-// Sign in
-$app->get('/sign-in', function(Request $request, Response $response) {
-  // Get flash messages from previous request
-  $messages = $this->flash->getMessages();
-  return $this->view->render($response, 'pages/sign-in.twig', $messages);
-});
