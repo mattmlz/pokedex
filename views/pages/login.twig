@@ -2,7 +2,7 @@
 
 <div class="container form center-align">
   <div class="card hoverable">
-    <form method="post" action="{{ base_url() }}/login/log">
+    <form method="post" id="login">
       <div class="card-content">
         <div class="row">
           <div class="input-field col s6">
@@ -25,6 +25,7 @@
   
   <div class="center-align messages">
     <h6>{{ success.0 }}</h6>
+    <h6>{{ error.0 }}</h6>
   </div>
 </div>
 

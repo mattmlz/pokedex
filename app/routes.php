@@ -11,19 +11,29 @@ $app->get('/',function(Request $request, Response $response) {
   return $this->view->render($response, 'pages/home.twig', $dataView);
 })->setName('home');
 
-
-// Login page
+// Login page GET
 $app->get('/login',function(Request $request, Response $response) {
   // Get flash messages
   $messages = $this->flash->getMessages();
   return $this->view->render($response, 'pages/login.twig', $messages);
 })->setName('login');
 
-// Login page
-$app->post('/login',function(Request $request, Response $response) {
-  // Get flash messages
-  $messages = $this->flash->getMessages();
-  return $this->view->render($response, 'pages/login.twig', $messages);
+// User login POST
+$app->post('/login',function(Request $request, Response $response) use ($app){
+  $value = $request->getParams();
+  $logrequest = $this->db->prepare('SELECT * FROM users WHERE email = :email');
+  $logrequest->execute([
+    'email' => $value['email'],
+    ]);
+  $user = $logrequest->fetch();
+  if(isset($user) && password_verify($value['password'], $user->password)){
+    $_SESSION['logged'] = true;
+    $_SESSION['auth'] = $user;
+    return $response->withStatus(302)->withHeader('Location', 'profile');
+  } else {
+    $this->flash->addMessage('error','Wrong email or password ⚠️');
+    return $response->withStatus(302)->withHeader('Location', 'login');
+  }
 });
 
 // Sign in
@@ -78,7 +88,7 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
           'first_name' => $value['first-name'],
           'last_name' => $value['last-name'],
           'email' => $value['email'],
-          'password' => $value['password'],
+          'password' => password_hash($value['password'], PASSWORD_DEFAULT),
       ]);
       // Redirect
       return $response->withStatus(302)->withHeader('Location', 'login');
@@ -88,3 +98,14 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
     }
   }
 })->setName('sign-in');
+
+// Profile
+$app->get('/profile',function(Request $request, Response $response) use ($app) {
+  if($_SESSION['logged'] === true){
+    $dataView = [];
+    return $this->view->render($response, 'pages/profile.twig', $dataView);
+  } else {
+    $this->flash->addMessage('error','Please connect or reconnect to your account ⚠️');
+    return $response->withStatus(302)->withHeader('Location', 'login');
+  }
+})->setName('profile');
