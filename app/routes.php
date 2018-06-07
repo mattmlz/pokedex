@@ -123,10 +123,15 @@ $app->get('/dashboard/search', function(Request $request, Response $response) us
 
 // List of pokemons
 $app->get('/dashboard/list', function(Request $request, Response $response) use ($app) {
+  //Fetch pokemon list
   $listrequest = $this->db->query('SELECT * FROM pokemons');
   $list = $listrequest->fetchAll();
+  //Fetch types lists
+  $typesrequest = $this->db->query('SELECT pokemons_types.id_pokemon, pokemons_types.id_type, types.id, types.name FROM pokemons_types, types');
+  $types = $typesrequest->fetchAll();
   $dataView = [
     'pokemons' => $list,
+    'types' => $types,
   ];
   return $this->view->render($response, 'pages/dashboard/list.twig', $dataView);
 })->setName('list');
