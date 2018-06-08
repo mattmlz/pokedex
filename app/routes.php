@@ -104,7 +104,6 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
 // Profile
 $app->get('/dashboard/profile', function(Request $request, Response $response) use ($app) {
   if($_SESSION['logged'] === true){
-    
     $dataView = [
       'user' => $_SESSION['auth'],
     ];
@@ -124,15 +123,28 @@ $app->get('/dashboard/search', function(Request $request, Response $response) us
 // List of pokemons
 $app->get('/dashboard/list', function(Request $request, Response $response) use ($app) {
   //Fetch pokemon list
-  $listrequest = $this->db->query('SELECT * FROM pokemons');
-  $list = $listrequest->fetchAll();
+  $req1 = $this->db->query('
+    SELECT 
+      pokemons.id AS pid, 
+      pokemons.name AS pname, 
+      pokemons.height AS pheight, 
+      pokemons.weight AS pweight, 
+      pokemons.picture AS ppicture, 
+      pokemons_types.id_type AS pttypes, 
+      types.id AS tid, 
+      types.name AS tname
+    FROM pokemons
+    RIGHT JOIN pokemons_types ON pokemons.id = pokemons_types.id_pokemon
+    RIGHT JOIN types ON types.id = pokemons_types.id_type');
+  $res1 = $req1->fetchAll();
   //Fetch types lists
-  $typesrequest = $this->db->query('SELECT pokemons_types.id_pokemon, pokemons_types.id_type, types.id, types.name FROM pokemons_types, types');
-  $types = $typesrequest->fetchAll();
+  $req2 = $this->db->query('SELECT * FROM types');
+  $res2 = $req2->fetchAll();
   $dataView = [
-    'pokemons' => $list,
-    'types' => $types,
+    'pokemons' => $res1,
+    'types' => $res2,
   ];
+
   return $this->view->render($response, 'pages/dashboard/list.twig', $dataView);
 })->setName('list');
 
