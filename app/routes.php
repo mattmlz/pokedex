@@ -149,6 +149,7 @@ $app->get('/dashboard/search', function(Request $request, Response $response) us
 
 // List of pokemons
 $app->get('/dashboard/list', function(Request $request, Response $response) use ($app) {
+  // If no condition is selected or if user want to see all pokemons
   if(!isset($_GET['type']) || $_GET['type'] == 0){
     //Fetch pokemon list
     $req1 = $this->db->query('
@@ -166,6 +167,7 @@ $app->get('/dashboard/list', function(Request $request, Response $response) use 
       RIGHT JOIN types ON types.id = pokemons_types.id_type
     ');
   } else {
+    // If user select a category
     $searchValue = $_GET['type'];
     //Fetch pokemon list
     $req1 = $this->db->prepare('
@@ -198,8 +200,15 @@ $app->get('/dashboard/list', function(Request $request, Response $response) use 
   return $this->view->render($response, 'pages/dashboard/list.twig', $dataView);
 })->setName('list');
 
+$app->post('/dashboard/list', function(Request $request, Response $response) use ($app) {
+  $likes = $request->getParams();
+  echo '<pre>';
+  var_dump($likes);
+  echo '</pre>';
+});
+
 // Log out
-$app->get('/logout', function (Request $request, Response $response) {
+$app->get('/logout', function(Request $request, Response $response) {
   //prevent trying to destroy session without being connected
   if($_SESSION){
     session_destroy();

@@ -24,27 +24,32 @@
   </div>  
 
   <div class="row">
-    {% for _pokemon in pokemons %}
-      <div class="col s3">
-        <div class="card">
-          <div class="card-image">
-            <img src="{{ base_url() }}/assets/pictures/{{ _pokemon.ppicture }}">
-          </div>
-          <div class="card-content">
-            <h5>{{ _pokemon.pname }}</h5>
-            <p>Height: {{ _pokemon.pheight }}</p>
-            <p>Weight: {{ _pokemon.pweight }}</p>
-            <p>Type: {{ _pokemon.tname }}</p>
-          </div>
-          <div class="card-action">
-            <label>
-              <input type="checkbox" class="indeterminate-checkbox" {# checked #} />
-              <span>Check if you love him</span>
-            </label>
+    <form method="get" id="liked"></form>
+      {% for _pokemon in pokemons %}
+        <div class="col s3">
+          <div class="card">
+            <div class="card-image">
+              <img src="{{ base_url() }}/assets/pictures/{{ _pokemon.ppicture }}">
+            </div>
+            <div class="card-content">
+              <h5>{{ _pokemon.pname }}</h5>
+              <p>Height: {{ _pokemon.pheight }}</p>
+              <p>Weight: {{ _pokemon.pweight }}</p>
+              <p>Type: {{ _pokemon.tname }}</p>
+            </div>
+            <div class="card-action">
+              <label>
+                <input type="checkbox" name="like" class="indeterminate-checkbox" {# checked #} />
+                <span>Check if you love him</span>
+              </label>
+            </div>
           </div>
         </div>
+      {% endfor %}
+      <div class="fixed-action-btn">
+        <button class="btn-floating btn-large red" type="submit"><i class="large material-icons">playlist_add</i></button>
       </div>
-    {% endfor %}
+    </form>
   </div>
 </div>
 
