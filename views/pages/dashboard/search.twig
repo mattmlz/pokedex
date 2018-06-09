@@ -1,5 +1,36 @@
 {{ include('partials/header_logged.twig') }}
-<div class="container form center-align">
-  <h3>The search function isn't already available 😭. Come back later !</h3>
+<div class="container center-align">
+  <h3>Find your favorite pokemon !</h3>
+  <form method="get" id="search-form">
+    <div class="row">
+      <div class="input-field col s10">
+        <i class="material-icons prefix">search</i>
+        <input id="icon_prefix" type="text" name="search" class="validate">
+        <label for="icon_prefix">Search a pokemon by name</label>
+      </div>
+      <button class="btn waves-effect waves-light" type"submit">Search
+        <i class="material-icons right">done</i>
+      </button>
+    </div>
+  </form>
+  <h7>No results ? Try with an other name !</h7>
+
+  <div class="row">
+    {% for _pokemon in pokemons %}
+      <div class="col s3">
+        <div class="card">
+          <div class="card-image">
+            <img src="{{ base_url() }}/assets/pictures/{{ _pokemon.ppicture }}">
+          </div>
+          <div class="card-content">
+            <h5>{{ _pokemon.pname }}</h5>
+            <p>Height: {{ _pokemon.pheight }}</p>
+            <p>Weight: {{ _pokemon.pweight }}</p>
+            <p>Type: {{ _pokemon.tname }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 </div>
 {{ include('partials/footer.twig') }}

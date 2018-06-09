@@ -116,7 +116,34 @@ $app->get('/dashboard/profile', function(Request $request, Response $response) u
 
 // Search pokemons
 $app->get('/dashboard/search', function(Request $request, Response $response) use ($app) {
-  $dataView = [];
+  if(!isset($_GET['search'])){
+    $_GET['search'] = "";
+  }
+  $searchValue = $_GET['search'];
+  //Fetch researched list
+  $req1 = $this->db->prepare('
+  SELECT 
+    pokemons.id AS pid, 
+    pokemons.name AS pname, 
+    pokemons.height AS pheight, 
+    pokemons.weight AS pweight, 
+    pokemons.picture AS ppicture, 
+    pokemons_types.id_type AS pttypes, 
+    types.id AS tid, 
+    types.name AS tname
+  FROM pokemons 
+  RIGHT JOIN pokemons_types ON pokemons.id = pokemons_types.id_pokemon
+  RIGHT JOIN types ON types.id = pokemons_types.id_type
+  WHERE pokemons.name = :pname');
+  $req1->execute([
+    'pname' => $searchValue,
+  ]);
+  $res1 = $req1->fetchAll();
+
+  $messages = $this->flash->getMessages();
+  $dataView = [
+    'pokemons' => $res1,
+  ];
   return $this->view->render($response, 'pages/dashboard/search.twig', $dataView);
 })->setName('search');
 
