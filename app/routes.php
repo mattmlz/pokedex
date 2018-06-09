@@ -149,20 +149,43 @@ $app->get('/dashboard/search', function(Request $request, Response $response) us
 
 // List of pokemons
 $app->get('/dashboard/list', function(Request $request, Response $response) use ($app) {
-  //Fetch pokemon list
-  $req1 = $this->db->query('
-    SELECT 
-      pokemons.id AS pid, 
-      pokemons.name AS pname, 
-      pokemons.height AS pheight, 
-      pokemons.weight AS pweight, 
-      pokemons.picture AS ppicture, 
-      pokemons_types.id_type AS pttypes, 
-      types.id AS tid, 
-      types.name AS tname
-    FROM pokemons
-    RIGHT JOIN pokemons_types ON pokemons.id = pokemons_types.id_pokemon
-    RIGHT JOIN types ON types.id = pokemons_types.id_type');
+  if(!isset($_GET['type']) || $_GET['type'] == 0){
+    //Fetch pokemon list
+    $req1 = $this->db->query('
+      SELECT 
+        pokemons.id AS pid, 
+        pokemons.name AS pname, 
+        pokemons.height AS pheight, 
+        pokemons.weight AS pweight, 
+        pokemons.picture AS ppicture, 
+        pokemons_types.id_type AS pttypes, 
+        types.id AS tid, 
+        types.name AS tname
+      FROM pokemons
+      RIGHT JOIN pokemons_types ON pokemons.id = pokemons_types.id_pokemon
+      RIGHT JOIN types ON types.id = pokemons_types.id_type
+    ');
+  } else {
+    $searchValue = $_GET['type'];
+    //Fetch pokemon list
+    $req1 = $this->db->prepare('
+      SELECT 
+        pokemons.id AS pid, 
+        pokemons.name AS pname, 
+        pokemons.height AS pheight, 
+        pokemons.weight AS pweight, 
+        pokemons.picture AS ppicture, 
+        pokemons_types.id_type AS pttypes, 
+        types.id AS tid, 
+        types.name AS tname
+      FROM pokemons
+      RIGHT JOIN pokemons_types ON pokemons.id = pokemons_types.id_pokemon
+      RIGHT JOIN types ON types.id = pokemons_types.id_type
+      WHERE types.id = :tid ');
+    $req1->execute([
+      'tid' => $searchValue,
+    ]);
+  }
   $res1 = $req1->fetchAll();
   //Fetch types lists
   $req2 = $this->db->query('SELECT * FROM types');
