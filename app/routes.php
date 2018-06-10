@@ -30,6 +30,7 @@ $app->post('/login',function(Request $request, Response $response) use ($app){
     $_SESSION['logged'] = true;
     $_SESSION['auth'] = [
       'first_name' => $user->first_name,
+      'id' => $user->id,
     ];
     return $response->withStatus(302)->withHeader('Location', 'dashboard/profile');
   } else {
@@ -104,8 +105,27 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
 // Profile
 $app->get('/dashboard/profile', function(Request $request, Response $response) use ($app) {
   if($_SESSION['logged'] === true){
+    //Fetch list of liked pokemons from user logged
+    $req1 = $this->db->prepare('
+    SELECT 
+      pokemons.id AS pid, 
+      pokemons.name AS pname, 
+      pokemons.height AS pheight, 
+      pokemons.weight AS pweight, 
+      pokemons.picture AS ppicture, 
+      liked_pokemons.id_user AS likeuser,
+      liked_pokemons.id_pokemon_liked AS likedpokemon
+    FROM pokemons
+    RIGHT JOIN liked_pokemons ON liked_pokemons.id_pokemon_liked = pokemons.id
+    WHERE liked_pokemons.id_user = :iduser');
+    $req1->execute([
+      'iduser' => $_SESSION['auth']['id'],
+    ]);
+    $res1 = $req1->fetchAll();
+
     $dataView = [
       'user' => $_SESSION['auth'],
+      'pokemons' => $res1
     ];
     return $this->view->render($response, 'pages/dashboard/profile.twig', $dataView);
   } else {
@@ -172,11 +192,12 @@ $app->get('/dashboard/list', function(Request $request, Response $response) use 
     //Fetch pokemon list
     $req1 = $this->db->prepare('
       SELECT 
-        pokemons.id AS pid, 
-        pokemons.name AS pname, 
+        pokemons.id AS pid,
+        pokemons.slug AS pslug,
+        pokemons.name AS pname,
         pokemons.height AS pheight, 
-        pokemons.weight AS pweight, 
-        pokemons.picture AS ppicture, 
+        pokemons.weight AS pweight,
+        pokemons.picture AS ppicture,
         pokemons_types.id_type AS pttypes, 
         types.id AS tid, 
         types.name AS tname

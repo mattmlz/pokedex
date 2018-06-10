@@ -9,19 +9,21 @@
   </div>
 
   <div class="row">
-    <div class="col s4">
-      <div class="card">
-        <div class="card-image">
-          <img src="{{ base_url() }}/assets/pictures/pokemons/front/1.png">
-          <span class="card-title">Nom du pokemon</span>
-        </div>
-        <div class="card-content">
-          <p>Bulbasaur</p>
-          <p>Height: 7</p>
-          <p>Weight: 69</p>
+    {% for _pokemon in pokemons %}
+      <div class="col s4">
+        <div class="card">
+          <div class="card-image">
+            <img src="{{ base_url() }}/assets/pictures/{{ _pokemon.ppicture }}">
+            <span class="card-title">{{ _pokemon.pname }}</span>
+          </div>
+          <div class="card-content">
+            <p>{{ _pokemon.pname }}</p>
+            <p>Height: {{ _pokemon.pheight }}</p>
+            <p>Weight: {{ _pokemon.pweight }}</p>
+          </div>
         </div>
       </div>
-    </div>
+    {% endfor %}
   </div>
   
 </div>
