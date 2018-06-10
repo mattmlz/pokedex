@@ -4,21 +4,36 @@ session_start();
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-/* ROUTES */
-// Home
+/*********
+* ROUTES *
+*********/
+/* INDEX :
+  1. Home
+  2a. Render of login page
+  2b. Login form
+  3a.Render of sign-in page
+  3b. Sign-in form
+  4. Profile page
+  5. Search pokemons
+  6a. Render of list page
+  6b. Add pokemon to personnal list
+  7. Logout
+*/
+
+/* 1.Home */
 $app->get('/',function(Request $request, Response $response) {
   $dataView = [];
   return $this->view->render($response, 'pages/home.twig', $dataView);
 })->setName('home');
 
-// Login page GET
+/* 2a.Render of login page */
 $app->get('/login',function(Request $request, Response $response) {
   // Get flash messages
   $messages = $this->flash->getMessages();
   return $this->view->render($response, 'pages/login.twig', $messages);
 })->setName('login');
 
-// User login POST
+/* 2b.Login form */
 $app->post('/login',function(Request $request, Response $response) use ($app){
   $value = $request->getParams();
   $logrequest = $this->db->prepare('SELECT * FROM users WHERE email = :email');
@@ -39,14 +54,14 @@ $app->post('/login',function(Request $request, Response $response) use ($app){
   }
 });
 
-// Sign in
+/* 3a.Render of sign-in page */
 $app->get('/sign-in', function(Request $request, Response $response) {
   // Get flash messages
   $messages = $this->flash->getMessages();
   return $this->view->render($response, 'pages/sign-in.twig', $messages);
 });
 
-// Create account
+/* 3b. Sign-in form */
 $app->post('/sign-in', function(Request $request, Response $response) use ($app) {
   //Set parameters for datas handling
   $errors = [];
@@ -102,7 +117,7 @@ $app->post('/sign-in', function(Request $request, Response $response) use ($app)
   }
 })->setName('sign-in');
 
-// Profile
+/* 4. Profile page */
 $app->get('/dashboard/profile', function(Request $request, Response $response) use ($app) {
   if($_SESSION['logged'] === true){
     //Fetch list of liked pokemons from user logged
@@ -134,7 +149,7 @@ $app->get('/dashboard/profile', function(Request $request, Response $response) u
   }
 })->setName('profile');
 
-// Search pokemons
+/* 5.Search pokemons */
 $app->get('/dashboard/search', function(Request $request, Response $response) use ($app) {
   if(!isset($_GET['search'])){
     $_GET['search'] = "";
@@ -167,7 +182,7 @@ $app->get('/dashboard/search', function(Request $request, Response $response) us
   return $this->view->render($response, 'pages/dashboard/search.twig', $dataView);
 })->setName('search');
 
-// List of pokemons
+/* 6a. Render of list page */
 $app->get('/dashboard/list', function(Request $request, Response $response) use ($app) {
   // If no condition is selected or if user want to see all pokemons
   if(!isset($_GET['type']) || $_GET['type'] == 0){
@@ -221,7 +236,7 @@ $app->get('/dashboard/list', function(Request $request, Response $response) use 
   return $this->view->render($response, 'pages/dashboard/list.twig', $dataView);
 })->setName('list');
 
-// Add a new pokemon in profile list
+/* 6b. Add pokemon to personnal list */
 $app->post('/dashboard/list', function(Request $request, Response $response) use ($app) {
   $likes = $request->getParams();
   $req1 = $this->db->prepare('INSERT INTO liked_pokemons (id_user, id_pokemon_liked) VALUES (:userid, :likedpokemon)');
@@ -232,7 +247,7 @@ $app->post('/dashboard/list', function(Request $request, Response $response) use
   return $response->withStatus(302)->withHeader('Location', 'list');
 });
 
-// Log out
+/* 7. Logout */
 $app->get('/logout', function(Request $request, Response $response) {
   //prevent trying to destroy session without being connected
   if($_SESSION){
