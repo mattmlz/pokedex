@@ -221,11 +221,15 @@ $app->get('/dashboard/list', function(Request $request, Response $response) use 
   return $this->view->render($response, 'pages/dashboard/list.twig', $dataView);
 })->setName('list');
 
+// Add a new pokemon in profile list
 $app->post('/dashboard/list', function(Request $request, Response $response) use ($app) {
   $likes = $request->getParams();
-  echo '<pre>';
-  var_dump($likes);
-  echo '</pre>';
+  $req1 = $this->db->prepare('INSERT INTO liked_pokemons (id_user, id_pokemon_liked) VALUES (:userid, :likedpokemon)');
+  $req1->execute([
+    'userid' => $_SESSION['auth']['id'],
+    'likedpokemon' => $likes['like'],
+  ]);
+  return $response->withStatus(302)->withHeader('Location', 'list');
 });
 
 // Log out
