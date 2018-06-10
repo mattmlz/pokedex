@@ -10,14 +10,14 @@
 
   <div class="row">
     {% for _pokemon in pokemons %}
-      <div class="col s4">
+      <div class="col s3">
         <div class="card">
           <div class="card-image">
             <img src="{{ base_url() }}/assets/pictures/{{ _pokemon.ppicture }}">
             <span class="card-title">{{ _pokemon.pname }}</span>
           </div>
           <div class="card-content">
-            <p>{{ _pokemon.pname }}</p>
+            <h6>{{ _pokemon.pname }}</h6>
             <p>Height: {{ _pokemon.pheight }}</p>
             <p>Weight: {{ _pokemon.pweight }}</p>
           </div>

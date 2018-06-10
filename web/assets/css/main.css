@@ -8,3 +8,15 @@ body {
 main {
   flex: 1 0 auto;
 }
+
+/* Header colors */
+nav .nav-wrapper { background: #33529E; }
+nav ul a { color: #FFC40B; }
+nav .brand-logo { color: #FFC40B; }
+
+/* Footer colors */
+.page-footer { background-color: #FE0004; }
+
+button {
+  background: #33529E;
+}
